@@ -1,10 +1,18 @@
-//
-//  Rain.cpp
-//  Pd_Index
-//
-//  Created by Esler,Robert Wadhams on 6/2/25.
+
+/*
+ This is a rain generator based on Andy Farnell's book "Designing Sound"
+ There are five public parameters:
+ rain = rain intensity (this is inversely proportional .001 - .1 is a good range where .001 is intense)
+ rainVol = the overall volume of the rain drops
+ bpCf = the bandpass center frequency on the farfield rain
+ bpQ = the bandwidth of the farfield rain
+ bpRainVol = the volume of the farfield rain
+ 
+ All code not associated with the Unreal Engine API: Copyright © 2025 Robert Esler
+ */
+
 //  Copyright © 2025 Epic Games, Inc. All rights reserved.
-//
+
 
 #include "Noise.h"
 #include "BandPass.h"

@@ -1,10 +1,12 @@
-//
-//  Reverb.cpp
-//  Pd_Index
-//
-//  Created by Esler,Robert Wadhams on 6/2/25.
+/*
+ A Schroeder Reverberator
+ Four comb filters in parallel
+ and two allpass filters in series
+ 
+ All code not associated with the Unreal Engine API: Copyright © 2025 Robert Esler
+ */
 //  Copyright © 2025 Epic Games, Inc. All rights reserved.
-//
+
 
 #include "VariableDelay.h"
 #include "LowPass.h"

@@ -1,0 +1,102 @@
+Unreal Metasounds Plugin Issues
+
+When creating a new plugin from scratch with NO CODE, it builds fine.
+
+When I add the code from this tutorial: https://dev.epicgames.com/community/learning/tutorials/ry7p/unreal-engine-creating-metasound-nodes-in-c-quickstart#setupanewc++unrealengineplugin
+
+It can't find the API, even when adding both the JSON and Module code.
+
+If I tell Xcode to search header paths: "/Users/Shared/Epic Games/UE_5.5/Engine/Plugins/Runtime/Metasound",
+
+I also have to add 
+:
+```
+#include "MetasoundPrimitives.h"
+
+namespace Metasound {}
+```
+it removes the errors but then throws new errors:
+/Users/Shared/Epic Games/UE_5.5/Engine/Plugins/Runtime/Metasound/Source/MetasoundFrontend/Public/MetasoundPrimitives.h:10:2 extra qualification on member 'TDataReferenceTypeInfo' [-Werror,-Wextra-qualification]
+
+
+Showing Recent Issues
+Processing build for Target=TestPdPlugin Platform=Mac Configuration=Development -architecture=arm64 /Users/robfa99571/Documents/Unreal Projects/TestPdPlugin/TestPdPlugin.uproject 
+
+In MetasoundDayaFactory line 1137 I had to remove the keyword 'template'.  Same as line: 1083
+
+Had to remove the namespace Metasound to MetasoundPrimitives.h 
+
+Same with several other files but instead moved the macro: DECLARE_METASOUND_DATA_REFERENCE_TYPES(Metasound::FAudioBuffer, METASOUNDGRAPHCORE_API, FAudioBufferTypeInfo, FAudioBufferReadRef, FAudioBufferWriteRef);
+outside the namespace.  
+MetasoundTime.h, *Trigger.h,  *AudioBuffer.h, *Router.h
+
+-----------------------------
+After altering THEIR code,
+
+I got it to finally work:
+
+Created a new Unreal C++ project
+Then created a new blank plugin (Blank template or whatever)
+
+You also need to add these modules to your .Build.cs file:
+"MetasoundEngine",
+"MetasoundFrontend",
+"MetasoundGraphCore",
+"MetasoundStandardNodes"
+
+Then created a new .cpp file, paste the tutorial code.
+
+You also need to add this to your ProjectName.cpp
+
+#include "MetasoundFrontendRegistries.h"
+
+ void FProjectName::StartupModule() {
+FMetasoundFrontendRegistryContainer::Get()->RegisterPendingNodes();
+}
+
+
+Then I had to build the project in Unreal.  This didn't work on some projects, so I had to create a new project.   
+
+Then quit Unreal and Xcode.  Open it up.  You may have to do this a few times.  
+And after all that the "Tutorial Node" showed up in Metasounds.  
+----------------------------
+Everytime you build from Xcode, you have to compile from Unreal, then quit and then reopen and your changes should be there.  This is probably because plugins are dylibs and not actually hot loaded, despite it saying it's "hot loading".  
+
+-----------------------------
+//some code that demostrates how to properly use a macro, if that is even a good idea, ever
+#include <iostream>
+
+// Macro function to calculate the square of a number
+#define SQUARE(x) ((x) * (x))
+#define DEFINE_TYPEDEF(TypeName) typedef int TypeName;
+//this is what Unreal is doing, not sure how they are getting away with this.
+//#define DEFINE_TYPEDEF(TypeName) typedef int ::rob::TypeName;
+
+namespace rob 
+{
+  typedef double t_float;
+  t_float x = 3.14159;
+  t_float y = SQUARE(x);
+  DEFINE_TYPEDEF(MyIntegerType);
+}
+
+int main() {
+    rob::MyIntegerType r;
+    std::cout << rob::y << std::endl;
+    return 0;
+}
+----------
+I also had to include the path to both metasounds and my Source folder in "Header Search Paths"
+"/Users/Shared/Epic Games/UE_5.5/Engine/Plugins/Runtime/Metasound"
+"/Users/xxxxxxx/Documents/Unreal Projects/Pd/Plugins/PdPlugin/Source/PdPlugin/Public"
+
+--------
+Issue with FFloatReadRef not updating during runtime, will figure this out another day.
+Ok. I had to add: 
+```
+const float *tempA = InputA.Get(); 
+```
+to get a copy of the read-only InputA value.  This may not be necessary and it's possible I'm hallucinating this, but it wasn't working during runtime.  
+--------
+
+Don't forget to #include all .h files from Pd++
