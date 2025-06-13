@@ -15,7 +15,6 @@ This is a dummy template that you could use to create a new metasound node.
 #include "MetasoundParamHelper.h"            // METASOUND_PARAM and METASOUND_GET_PARAM family of macros
 
 //place your pd++ headers
-#include "PdMaster.h"
 
 
 // Required for ensuring the node is supported by all languages in engine. Must be unique per MetaSound.
@@ -150,7 +149,7 @@ namespace Metasound
                 for (int32 FrameIndex = 0; FrameIndex < NumFrames; ++FrameIndex)
                 {
                 
-                   // OutputAudio[FrameIndex] = osc.perform(InputAudio[FrameIndex]);
+                   //OutputAudio[FrameIndex] = osc.perform(InputAudio[FrameIndex]);
                     OutputAudio[FrameIndex] = InputAudio[FrameIndex];
                 }
             }
@@ -176,6 +175,7 @@ namespace Metasound
         
         // Outputs
         FAudioBufferWriteRef AudioOutput;
+       
        
     };
 
