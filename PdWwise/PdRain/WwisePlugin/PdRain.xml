@@ -50,6 +50,35 @@ for the documentation about the plugin xml format
           </ValueRestriction>
         </Restrictions>
       </Property>
+
+		<Property Name="Intensity" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Intensity">
+			<UserInterface Step="1" Fine="0.1" Decimals="3" UIMax="100" />
+			<DefaultValue>50</DefaultValue>
+			<AudioEnginePropertyID>1</AudioEnginePropertyID>
+			<Restrictions>
+				<ValueRestriction>
+					<Range Type="Real32">
+						<Min>0</Min>
+						<Max>100</Max>
+					</Range>
+				</ValueRestriction>
+			</Restrictions>
+		</Property>
+
+		<Property Name="Rain Volume" Type="Real32" SupportRTPCType="Exclusive" DisplayName="Rain Volume">
+			<UserInterface Step="1" Fine="0.1" Decimals="3" UIMax="100" />
+			<DefaultValue>50</DefaultValue>
+			<AudioEnginePropertyID>2</AudioEnginePropertyID>
+			<Restrictions>
+				<ValueRestriction>
+					<Range Type="Real32">
+						<Min>0</Min>
+						<Max>100</Max>
+					</Range>
+				</ValueRestriction>
+			</Restrictions>
+		</Property>
+		
     </Properties>
   </SourcePlugin>
 </PluginModule>

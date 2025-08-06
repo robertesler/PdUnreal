@@ -33,11 +33,15 @@ the specific language governing permissions and limitations under the License.
 // Add parameters IDs here, those IDs should map to the AudioEnginePropertyID
 // attributes in the xml property definition.
 static const AkPluginParamID PARAM_DURATION_ID = 0;
-static const AkUInt32 NUM_PARAMS = 1;
+static const AkPluginParamID PARAM_INTENSITY_ID = 1;
+static const AkPluginParamID PARAM_RAIN_VOL_ID = 2;
+static const AkUInt32 NUM_PARAMS = 3;
 
 struct PdRainRTPCParams
 {
     AkReal32 fDuration;
+    AkReal32 fIntensity;
+    AkReal32 fRainVol;
 };
 
 struct PdRainNonRTPCParams

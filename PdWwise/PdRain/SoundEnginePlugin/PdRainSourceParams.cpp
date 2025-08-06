@@ -54,6 +54,8 @@ AKRESULT PdRainSourceParams::Init(AK::IAkPluginMemAlloc* in_pAllocator, const vo
     {
         // Initialize default parameters here
         RTPC.fDuration = 0.0f;
+		RTPC.fIntensity = 50.0f;
+		RTPC.fRainVol = 50.0f;
         m_paramChangeHandler.SetAllParamChanges();
         return AK_Success;
     }
@@ -74,6 +76,8 @@ AKRESULT PdRainSourceParams::SetParamsBlock(const void* in_pParamsBlock, AkUInt3
 
     // Read bank data here
     RTPC.fDuration = READBANKDATA(AkReal32, pParamsBlock, in_ulBlockSize);
+	RTPC.fIntensity = READBANKDATA(AkReal32, pParamsBlock, in_ulBlockSize);
+	RTPC.fRainVol = READBANKDATA(AkReal32, pParamsBlock, in_ulBlockSize);
     CHECKBANKDATASIZE(in_ulBlockSize, eResult);
     m_paramChangeHandler.SetAllParamChanges();
 
@@ -91,6 +95,13 @@ AKRESULT PdRainSourceParams::SetParam(AkPluginParamID in_paramID, const void* in
         RTPC.fDuration = *((AkReal32*)in_pValue);
         m_paramChangeHandler.SetParamChange(PARAM_DURATION_ID);
         break;
+	case PARAM_INTENSITY_ID:
+        RTPC.fIntensity = *((AkReal32*)in_pValue);
+		m_paramChangeHandler.SetParamChange(PARAM_INTENSITY_ID);
+    case PARAM_RAIN_VOL_ID:
+        RTPC.fRainVol = *((AkReal32*)in_pValue);
+        m_paramChangeHandler.SetParamChange(PARAM_RAIN_VOL_ID);
+		break;
     default:
         eResult = AK_InvalidParameter;
         break;

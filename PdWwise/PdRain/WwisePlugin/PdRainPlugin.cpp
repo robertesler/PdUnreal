@@ -39,7 +39,8 @@ bool PdRainPlugin::GetBankParameters(const GUID & in_guidPlatform, AK::Wwise::Pl
 {
     // Write bank data here
     in_dataWriter.WriteReal32(m_propertySet.GetReal32(in_guidPlatform, "Duration"));
-
+    in_dataWriter.WriteReal32(m_propertySet.GetReal32(in_guidPlatform, "Intensity"));
+    in_dataWriter.WriteReal32(m_propertySet.GetReal32(in_guidPlatform, "Rain Volume"));
     return true;
 }
 

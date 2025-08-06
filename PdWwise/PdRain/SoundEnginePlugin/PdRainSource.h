@@ -63,6 +63,8 @@ public:
     /// This method is called to determine the approximate duration (in ms) of the source.
     AkReal32 GetDuration() const override;
 
+    float map(float input, float rangeLow, float rangeHigh, float targetA, float targetB);
+
 private:
     PdRainSourceParams* m_pParams;
     AK::IAkPluginMemAlloc* m_pAllocator;

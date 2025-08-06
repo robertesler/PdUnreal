@@ -87,6 +87,17 @@ void PdRainSource::Execute(AkAudioBuffer* out_pBuffer)
     m_durationHandler.SetDuration(m_pParams->RTPC.fDuration);
     m_durationHandler.ProduceBuffer(out_pBuffer);
 
+	float temp = m_pParams->RTPC.fIntensity;
+	float tempB = m_pParams->RTPC.fRainVol;
+
+    //These ranges tend to work the best
+    float rainIntensity = this->map(temp, 100, 0, .001, .1);
+    float bpCf = this->map(temp, 0, 100, 1400, 900);
+    float bpQ = this->map(temp, 0, 100, 2, 3);
+    float rainVol = this->map(temp, 0, 100, 2, 4);
+    float bpRainVol = this->map(tempB, 0, 100, 1, 3);
+    m_rain.setRain(rainIntensity, rainVol, bpCf, bpQ, bpRainVol);
+
     const AkUInt32 uNumChannels = out_pBuffer->NumChannels();
 
     AkUInt16 uFramesProduced;
@@ -108,4 +119,15 @@ void PdRainSource::Execute(AkAudioBuffer* out_pBuffer)
 AkReal32 PdRainSource::GetDuration() const
 {
     return m_durationHandler.GetDuration() * 1000.0f;
+}
+
+float PdRainSource::map(float input, float rangeLow, float rangeHigh, float targetA, float targetB) {
+    // Ensure the input is within bounds
+    if (rangeLow == rangeHigh) return targetA; // Avoid division by zero
+
+    // Normalize input to a 0-1 scale based on the source range
+    double normalized = (input - rangeLow) / (rangeHigh - rangeLow);
+
+    // Scale to the target range
+    return targetA + normalized * (targetB - targetA);
 }
